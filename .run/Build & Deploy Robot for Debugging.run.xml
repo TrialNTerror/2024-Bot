@@ -19,9 +19,11 @@
       </option>
       <option name="vmOptions"/>
     </ExternalSystemSettings>
-    <RunAsTest>false</RunAsTest>
+    <ForceTestExec>false</ForceTestExec>
+    <!--<RunAsTest>false</RunAsTest>-->
     <method v="2"/>
   </configuration>
+  <!--
   <configuration default="false" factoryName="Gradle"
     name="Build &amp; Deploy Robot for Debugging" type="GradleRunConfiguration">
     <DebugAllEnabled>false</DebugAllEnabled>
@@ -42,7 +44,9 @@
       </option>
       <option name="vmOptions"/>
     </ExternalSystemSettings>
-    <RunAsTest>false</RunAsTest>
+    <ForceTestExec>false</ForceTestExec>
+    <!--<RunAsTest>false</RunAsTest>-->
     <method v="2"/>
   </configuration>
 </component>
+-->

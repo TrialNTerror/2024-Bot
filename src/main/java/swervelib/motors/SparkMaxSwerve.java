@@ -248,12 +248,12 @@ public class SparkMaxSwerve extends SwerveMotor
 //    int pidSlot =
 //        isDriveMotor ? SparkMAX_slotIdx.Velocity.ordinal() : SparkMAX_slotIdx.Position.ordinal();
     int pidSlot = 0;
-    configureSparkMax(() -> pid.setP(config.p));
-    configureSparkMax(() -> pid.setI(config.i));
-    configureSparkMax(() -> pid.setD(config.d));
-    configureSparkMax(() -> pid.setFF(config.f));
-    configureSparkMax(() -> pid.setIZone(config.iz));
-    configureSparkMax(() -> pid.setOutputRange(config.output.min, config.output.max));
+    configureSparkMax(() -> pid.setP(config.p, pidSlot));
+    configureSparkMax(() -> pid.setI(config.i, pidSlot));
+    configureSparkMax(() -> pid.setD(config.d, pidSlot));
+    configureSparkMax(() -> pid.setFF(config.f, pidSlot));
+    configureSparkMax(() -> pid.setIZone(config.iz, pidSlot));
+    configureSparkMax(() -> pid.setOutputRange(config.output.min, config.output.max, pidSlot));
   }
 
   /**
@@ -372,10 +372,12 @@ public class SparkMaxSwerve extends SwerveMotor
                                 ControlType.kPosition,
                                 pidSlot,
                                 feedforward));
+      /*
       if (SwerveDriveTelemetry.isSimulation)
       {
         encoder.setPosition(setpoint);
       }
+      */
     }
   }
 

@@ -43,6 +43,12 @@ public class SwerveSubsystem extends SubsystemBase
   public        double      maximumSpeed = Units.feetToMeters(14.5);
 
   /**
+   * The auto builder for PathPlanner, there can only ever be one created so we save it just incase we generate multiple
+   * paths with events.
+   */
+  private SwerveAutoBuilder autoBuilder  = null;
+
+  /**
    * Initialize {@link SwerveDrive} with the directory provided.
    *
    * @param directory Directory of swerve drive config files.
