@@ -1,13 +1,22 @@
+
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands.swervedrive.auto;
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.PathPoint;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.path.PathPoint;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+//import com.pathplanner.lib.PathConstraints;
+//import com.pathplanner.lib.PathPlanner;
+//import com.pathplanner.lib.PathPlannerTrajectory;
+//import com.pathplanner.lib.PathPoint;
+//import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -45,11 +54,11 @@ public final class Autos
   public static CommandBase exampleAuto(SwerveSubsystem swerve)
   {
     boolean               onTheFly = false; // Use the path defined in code or loaded from PathPlanner.
-    PathPlannerTrajectory example;
+    AutoBuilder example;
     if (onTheFly)
     {
       // Simple path with holonomic rotation. Stationary start/end. Max velocity of 4 m/s and max accel of 3 m/s^2
-      example = PathPlanner.generatePath(
+      example = AutoBuilder.generatePath(
           new PathConstraints(4, 3),
           new PathPoint(new Translation2d(0, 0), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
 // position, heading(direction of travel), holonomic rotation
@@ -60,14 +69,14 @@ public final class Autos
                                         );
     } else
     {
-      List<PathPlannerTrajectory> example1 = PathPlanner.loadPathGroup("New New Path", new PathConstraints(4, 3));
+      List<PathPlannerTrajectory> example1 = PathPlannerPath.loadPathGroup("New New Path", new PathConstraints(4, 3));
       // This is just an example event map. It would be better to have a constant, global event map
       // in your code that will be used by all path following commands.
       HashMap<String, Command> eventMap = new HashMap<>();
       eventMap.put("marker1", new PrintCommand("Passed marker 1"));
       // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want
       // to create an auto command. A good place to put this is in RobotContainer along with your subsystems.
-      SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+      AutoBuilder autoBuilder = new SwerveAutoBuilder(
           swerve::getPose,
 // Pose2d supplier
           swerve::resetOdometry,
@@ -84,7 +93,7 @@ public final class Autos
           swerve
 // The drive subsystem. Used to properly set the requirements of path following commands
       );
-      return Commands.sequence(autoBuilder.fullAuto(example1));
+      return Commands.sequence(AutoBuilder.fullAuto(example1));
     }
 //    swerve.postTrajectory(example);
     return Commands.sequence(new FollowTrajectory(swerve, example, true));
@@ -237,7 +246,7 @@ public final class Autos
         return null;
       }
     }
-    PathPlannerTrajectory path = PathPlanner.generatePath(new PathConstraints(4, 3), false,
+    PathPlannerTrajectory path = PathPlannerPath.generatePath(new PIDConstants(4, 3), false,
                                                           PathPoint.fromCurrentHolonomicState(swerve.getPose(),
                                                                                               swerve.getRobotVelocity()),
                                                           new PathPoint(aprilTagField.getTagPose(id).get()
@@ -247,3 +256,4 @@ public final class Autos
     return Commands.sequence(new FollowTrajectory(swerve, path, false));
   }
 }
+
